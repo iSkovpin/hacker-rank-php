@@ -8,7 +8,7 @@
  */
 
 function flippingBits($n) {
-    return $n ^ bindec(str_repeat('1', 32));
+    return $n ^ 0xFFFFFFFF; // 0xFFFFFFFF - max 32-bit number
 }
 
 $fptr = fopen(getenv("OUTPUT_PATH"), "w");
