@@ -8,33 +8,21 @@
  */
 
 function flippingMatrix($matrix) {
-    $matrixWidth = count($matrix[0]);
-    $circles = $matrixWidth / 2 - 1; // count from 0
-    $circleElems = [];
+    $getCandidates = function ($matrix, $y, $x) {
+        $max = count($matrix[0]) - 1;
+        $candidates[] = $matrix[$y][$x];
+        $candidates[] = $matrix[$y][$max - $x];
+        $candidates[] = $matrix[$max - $y][$x];
+        $candidates[] = $matrix[$max - $y][$max - $x];
+        return $candidates;
+    };
 
-    for ($circle = 0; $circle <= $circles; $circle++) {
-        $min = $circle;
-        $max = $matrixWidth - 1 - $circle;
-        $circleElems[$circle] = [];
-
-        for ($y = $min, $x = $min; $x <= $max; $x++) {
-            $circleElems[$circle][] = $matrix[$y][$x];
-        }
-        for ($y = $max, $x = $min; $x <= $max; $x++) {
-            $circleElems[$circle][] = $matrix[$y][$x];
-        }
-        for ($y = $min + 1, $x = $min; $y <= $max - 1; $y++) {
-            $circleElems[$circle][] = $matrix[$y][$x];
-        }
-        for ($y = $min + 1, $x = $max; $y <= $max - 1; $y++) {
-            $circleElems[$circle][] = $matrix[$y][$x];
-        }
-    }
-
+    $half = count($matrix[0]) / 2 - 1;
     $sum = 0;
-    foreach ($circleElems as $elems) {
-        rsort($elems);
-        $sum += array_sum(array_slice($elems, count($elems) / 4)); // max sum of the circle quarter
+    for ($y = 0; $y <= $half; $y++) {
+        for ($x = 0; $x <= $half; $x++) {
+            $sum += max($getCandidates($matrix, $y, $x));
+        }
     }
 
     return $sum;
