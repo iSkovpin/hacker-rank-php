@@ -1,3 +1,5 @@
+# Suddenly this task can't be done with PHP again (platform restrictions)
+# This is a debug challenge
 import re
 month = []
 

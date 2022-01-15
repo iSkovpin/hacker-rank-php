@@ -1,4 +1,5 @@
 # Suddenly this task can't be done with PHP (platform restrictions)
+# This is a debug challenge
 def strings_xor(s, t):
     res = ""
     for i in range(len(s)):
