@@ -17,9 +17,30 @@ function palindromeIndex($s)
         return $excessIndex;
     }
 
+    $debugExcessIndex = function ($str, $index, $i, $j) {
+        echo "Excess index: $index ($str[$index]) ~ ";
+        $range = array_merge(range($i - 3, $i + 3), [null], range($j + 3, $j - 3, -1));
+
+        foreach ($range as $idx) {
+            if ($idx === null) {
+                echo ' ';
+                continue;
+            }
+
+            if (isset($str[$idx])) {
+                $letter = $str[$idx];
+                if ($idx === $index) {
+                    $letter = strtoupper($letter);
+                }
+
+                echo $letter;
+            }
+        }
+        echo "\n";
+    };
+
     $excessIndex = -1;
-    $half = floor(strlen($s) / 2);
-    for ($i = 0, $j = strlen($s) - 1; $i <= $half; $i++, $j--) {
+    for ($i = 0, $j = strlen($s) - 1; $j - $i > 0; $i++, $j--) {
         // If letters are the same - go forward
         if ($s[$i] === $s[$j]) {
             continue;
@@ -35,11 +56,13 @@ function palindromeIndex($s)
         // to be sure, that replacing of this symbol can transform the string to a palindrome
         if ($s[$i] === $s[$j - 1] && $s[$i + 1] === $s[$j - 2]) {
             $excessIndex = $j;
+//            $debugExcessIndex($s, $excessIndex, $i, $j);
             $i--;
             continue;
         }
 
         $excessIndex = $i;
+//        $debugExcessIndex($s, $excessIndex, $i, $j);
         $j++;
     }
 
