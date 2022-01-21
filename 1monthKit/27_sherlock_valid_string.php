@@ -8,32 +8,13 @@
  */
 
 function isValid($s) {
-    $frequencies = [];
-
-    $len = strlen($s);
-    for ($i = 0; $i < $len; $i++) {
-        if (!isset($frequencies[$s[$i]])) {
-            $frequencies[$s[$i]] = 0;
-        }
-        $frequencies[$s[$i]]++;
-    }
-
-    $frCount = [];
-    foreach ($frequencies as $frequency) {
-        if (!isset($frCount[$frequency])) {
-            $frCount[$frequency] = 0;
-        }
-        $frCount[$frequency]++;
-    }
+    $charFrequencies = count_chars($s, 1);
+    $frCount = array_count_values($charFrequencies);
+    $aloneFrequency = array_search(1, $frCount);
 
     if (count($frCount) === 1) {
         return 'YES';
-    } elseif(count($frCount) > 2) {
-        return 'NO';
-    }
-
-    $aloneFrequency = array_search(1, $frCount);
-    if ($aloneFrequency === false) {
+    } elseif(count($frCount) > 2 || $aloneFrequency === false) {
         return 'NO';
     }
 
