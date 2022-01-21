@@ -8,26 +8,37 @@
 
 function minimumBribes($q)
 {
+    // The decision is based on a consistent pattern I found
+    // The number of bribes equal:
+    // the sum of positive person shifts (during of $q array sorting)
+    // and quantity of negative shifts' crossings
+
     $len = count($q);
     $bribes = 0;
-    $steps = [];
+    $shifts = [];
 
     for ($i = 0; $i < $len; $i++) {
-        $steps[$i] = $q[$i] - $i - 1;
+        // For each element get shift to its final place
+        $shifts[$i] = $q[$i] - $i - 1;
 
-        if ($steps[$i] === 0) {
+        if ($shifts[$i] === 0) {
             continue;
-        } elseif ($steps[$i] > 0) {
-            $bribes += $steps[$i];
-        } elseif ($steps[$i] < -1) {
-            for ($j = $i - 1; $j > $steps[$i] + $i; $j--) {
-                if ($steps[$j] <= 0 && $steps[$j] + $j > $steps[$i] + $i) {
+        } elseif ($shifts[$i] > 0) {
+            // if a shift is positive, add bribes count
+            $bribes += $shifts[$i];
+        } elseif ($shifts[$i] < -1) {
+            // if a shift is negative, we should make some kind of backtracking
+            // from (current index - 1) to a (final index of current person)
+            for ($j = $i - 1; $j > $shifts[$i] + $i; $j--) {
+                // if some zero or negative shift ends after the (final index of current person)
+                // we should add 1 to the bribes counter
+                if ($shifts[$j] <= 0 && $shifts[$j] + $j > $shifts[$i] + $i) {
                     $bribes++;
                 }
             }
         }
 
-        if ($steps[$i] > 2) {
+        if ($shifts[$i] > 2) {
             echo "Too chaotic\n";
             return;
         }
