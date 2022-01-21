@@ -98,7 +98,11 @@ printf("%s tests are running\n", count($testNames));
 $successCount = 0;
 foreach ($testFileNames as $testName => $fileNames) {
     echo "Test $testName ...";
-    shell_exec("export OUTPUT_PATH=\"$fileNames[2]\" && php $fileName < $fileNames[0]");
+    $output = shell_exec("export OUTPUT_PATH=\"$fileNames[2]\" && php $fileName < $fileNames[0]");
+
+    if (!is_file($fileNames[2])) {
+        file_put_contents($fileNames[2], $output);
+    }
 
     if (trim(file_get_contents($fileNames[1])) === trim(file_get_contents($fileNames[2]))) {
         $successCount++;
